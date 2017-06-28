@@ -1,0 +1,15 @@
+<html>
+    <head></head>
+    <body>
+        {{#todolists}}
+            <p>Todo: {{todo}}</p>
+            <p>Description: {{description}}</p>
+        {{/todolists}}
+
+        
+       <form method="post" action="/todos">
+            <input class="inputbar" type"text" name="todo" placeholder="Insert Todo"/>
+            <button type="submit">Add to List</button>
+        </form>
+    </body>
+</html>

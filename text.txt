@@ -1,0 +1,4 @@
+psql Application (go into sql)
+\dt (show table)
+
+create returns a promise. Not a company result.
