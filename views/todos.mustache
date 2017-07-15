@@ -1,13 +1,22 @@
 <html>
     <head></head>
     <body>
+
         {{#todolists}}
+        <form method="post" action='/{{id}}'>
             <p>Todo: {{todo}}</p>
-            <p>Description: {{description}}</p>
+            <button type="submit">Delete todo</button>
+
+        </form>
+
+        <form method="get" action="/edit/{{id}}">
+                <button >Edit todo</button>
+            </form>
         {{/todolists}}
 
-        
-       <form method="post" action="/todos">
+
+
+       <form method="post" action="/">
             <input class="inputbar" type"text" name="todo" placeholder="Insert Todo"/>
             <button type="submit">Add to List</button>
         </form>

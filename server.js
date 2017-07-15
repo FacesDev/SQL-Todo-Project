@@ -10,28 +10,43 @@ application.use(express.static(__dirname + '/public'));
 application.use(bodyParser.urlencoded());
 
 
-application.get('/todos', async (request, response) => {
+application.get('/', async (request, response) => {
          var result = await models.Todolist.all();
          response.render("todos", {todolists: result});
 });
 
-application.post('/todos', (request, response) => {
-    var todolist = request.body.todolists;
+application.post('/', async (request, response) => {
+    var todolist = {
+        todo: request.body.todo
+    }
 
-    models.Todolist.create(todolist)
-        .then(result => response.json(result));
+    models.Todolist.create(todolist);
+    var result = await models.Todolist.all();
+    response.redirect('/')
 });
 
-application.put('/todos/:id', async (request, response) => {
-    var todolist = request.body.todolists;
-    var result = await models.Todolist.update(todolist, { where: {id: request.params.id}});
-    response.json(request.body.todolists);
+application.post('/:id', async (request, response) => {
+    await models.Todolist.destroy({ where: {id: request.params.id}});
+     response.redirect('/');
+});
+application.get('/edit/:id', async (request, response) => {
+    var todolist = await models.Todolist.findOne({
+        where: {
+            id: request.params.id
+        }
+    });
+    var model = {
+        id: todolist.id,
+        todo: todolist.todo
+    }
+    console.log('model', model);
+    response.render('edit-todo', model);
 });
 
-application.delete('/todos/:id', async (request, response) => {
-    models.Todolist.destroy({ where: {id: request.params.id}});
-     response.json(request.body.todolists);
+application.post('/edit/:id', async (request, response) => {
+    var id = request.params.id
+    await models.Todolist.update({todo: request.body.todo}, { where: {id: id } })
+        response.redirect('/');
 });
-
 
 application.listen(3000);
